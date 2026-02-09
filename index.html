@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,6 +168,16 @@
   <p>Just for you, <span id="herName">my love</span> ❤️</p>
 </header>
 
+<!-- Name input overlay -->
+<div id="nameOverlay" class="overlay">
+  <div class="overlay-card">
+    <h2>Before we begin 💖</h2>
+    <p>Tell me your name</p>
+    <input type="text" id="nameInput" placeholder="Your name" />
+    <button onclick="saveName()">Continue</button>
+  </div>
+</div>
+
 <!-- =====================
      NAVIGATION
      ===================== -->
@@ -272,13 +283,14 @@
      JAVASCRIPT LOGIC
      ===================== -->
 <script>
-  // Ask for her name once and personalize the header
-  const name = prompt('Enter her name ❤️');
-  if (name) {
-    document.getElementById('herName').innerText = name;
+  // Save name from overlay and personalize site
+  function saveName() {
+    const input = document.getElementById('nameInput').value.trim();
+    if (!input) return;
+    document.getElementById('herName').innerText = input;
+    document.getElementById('nameOverlay').style.display = 'none';
   }
 
-  // List of random reasons used on Valentine’s Day
   const reasons = [
     'You make ordinary moments feel special.',
     'Your smile is my favorite view.',
@@ -289,52 +301,34 @@
     'You love with your whole heart.'
   ];
 
-  // Shows a random reason from the array
   function showReason() {
     const box = document.getElementById('reasonBox');
-    const randomIndex = Math.floor(Math.random() * reasons.length);
-    box.innerText = reasons[randomIndex];
+    box.innerText = reasons[Math.floor(Math.random() * reasons.length)];
     box.style.display = 'block';
   }
 
-  // Switches visible day section
   function showDay(id) {
-    document.querySelectorAll('.day').forEach(section => {
-      section.classList.remove('active');
-    });
+    document.querySelectorAll('.day').forEach(d => d.classList.remove('active'));
     document.getElementById(id).classList.add('active');
   }
 
-  // Creates multiple falling emoji elements
   function makeFall(symbol) {
     for (let i = 0; i < 24; i++) {
       const item = document.createElement('div');
       item.className = 'fall-item';
       item.innerHTML = symbol;
-
-      // Random horizontal position
       item.style.left = Math.random() * 100 + 'vw';
-
-      // Random animation duration for natural effect
       item.style.animationDuration = 3 + Math.random() * 3 + 's';
-
       document.body.appendChild(item);
-
-      // Remove element after animation ends
-      setTimeout(() => {
-        item.remove();
-      }, 6000);
+      setTimeout(() => item.remove(), 6000);
     }
   }
 
-  // Reveals the hidden secret message for a day
-  function reveal(button) {
-    const secret = button.nextElementSibling;
-    secret.style.display = 'block';
-    button.style.display = 'none';
+  function reveal(btn) {
+    btn.nextElementSibling.style.display = 'block';
+    btn.style.display = 'none';
   }
 
-  // Show the first day by default
   showDay('rose');
 </script>
 
