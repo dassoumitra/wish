@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentine Week Special</title>
+
+  <!--
+    =====================
+    CSS STYLES
+    =====================
+    All styling is kept inline for simplicity.
+    This makes the project easy to share and run without extra files.
+  -->
+  <style>
+    /* Base page styling */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #fff0f5, #ffe6ec);
+      color: #333;
+      overflow-x: hidden; /* Prevent horizontal scroll caused by falling items */
+    }
+
+    /* Header section */
+    header {
+      background: #ff4d6d;
+      color: white;
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    /* Navigation bar for days */
+    nav {
+      display: flex;
+      overflow-x: auto; /* Allows scrolling on small screens */
+      background: #ffe3ea;
+    }
+
+    nav button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    nav button:hover {
+      background: #ffccd5;
+    }
+
+    /* Each day's section */
+    .day {
+      display: none; /* Hidden by default, shown via JS */
+      padding: 30px 16px;
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .day.active {
+      display: block;
+    }
+
+    /* Simple fade-in animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Card layout */
+    .card {
+      background: white;
+      padding: 28px 24px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      max-width: 520px;
+      margin: auto;
+      position: relative;
+      z-index: 2; /* Keeps content above falling emojis */
+    }
+
+    h2 {
+      color: #ff4d6d;
+      margin-top: 0;
+    }
+
+    .message {
+      font-size: 16px;
+      margin: 16px 0;
+      line-height: 1.6;
+    }
+
+    /* Button that triggers falling animation */
+    .fall-btn {
+      margin-top: 20px;
+      padding: 12px 22px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(45deg, #ff4d6d, #ff758f);
+      color: white;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    /* Individual falling emoji */
+    .fall-item {
+      position: fixed;
+      top: -30px; /* Start above the viewport */
+      font-size: 28px;
+      animation: fall linear forwards;
+      z-index: 1;
+      pointer-events: none; /* Prevent clicks on falling items */
+    }
+
+    /* Falling animation definition */
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Hidden secret message */
+    .secret {
+      margin-top: 18px;
+      font-size: 14px;
+      color: #ff4d6d;
+      display: none;
+    }
+
+    /* Button used to reveal secret text */
+    .reveal-btn {
+      margin-top: 14px;
+      background: none;
+      border: none;
+      color: #ff4d6d;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- =====================
+     HEADER
+     ===================== -->
+<header>
+  <h1>Valentine Week Special</h1>
+  <p>Just for you, <span id="herName">my love</span> ❤️</p>
+</header>
+
+<!-- =====================
+     NAVIGATION
+     ===================== -->
+<nav>
+  <!-- Each button switches the visible section -->
+  <button onclick="showDay('rose')">Rose</button>
+  <button onclick="showDay('propose')">Propose</button>
+  <button onclick="showDay('chocolate')">Chocolate</button>
+  <button onclick="showDay('teddy')">Teddy</button>
+  <button onclick="showDay('promise')">Promise</button>
+  <button onclick="showDay('hug')">Hug</button>
+  <button onclick="showDay('kiss')">Kiss</button>
+  <button onclick="showDay('valentine')">Valentine ❤️</button>
+</nav>
+
+<!-- =====================
+     DAILY SECTIONS
+     ===================== -->
+<section id="rose" class="day active">
+  <div class="card">
+    <h2>Rose Day 🌹</h2>
+    <p class="message">If love had a shape, it would look like you. This rose is my way of saying you make my world softer and brighter.</p>
+    <button class="fall-btn" onclick="makeFall('🌹')">Shower Roses</button>
+    <button class="reveal-btn" onclick="reveal(this)">Tap for a secret</button>
+    <div class="secret">You are my favorite thought every day.</div>
+  </div>
+</section>
+
+<section id="propose" class="day">
+  <div class="card">
+    <h2>Propose Day 💍</h2>
+    <p class="message">I don’t need perfect moments. I just need you in all the moments that matter.</p>
+    <button class="fall-btn" onclick="makeFall('💍')">Pop the Question</button>
+    <button class="reveal-btn" onclick="reveal(this)">Tap for a secret</button>
+    <div class="secret">I choose you. Today, tomorrow, always.</div>
+  </div>
+</section>
+
+<section id="chocolate" class="day">
+  <div class="card">
+    <h2>Chocolate Day 🍫</h2>
+    <p class="message">You make life sweeter in ways no chocolate ever could.</p>
+    <button class="fall-btn" onclick="makeFall('🍫')">Sweet Surprise</button>
+    <button class="reveal-btn" onclick="reveal(this)">Tap for a secret</button>
+    <div class="secret">I crave your smile more than chocolate.</div>
+  </div>
+</section>
+
+<section id="teddy" class="day">
+  <div class="card">
+    <h2>Teddy Day 🧸</h2>
+    <p class="message">Whenever you feel low, imagine this teddy carrying all my hugs to you.</p>
+    <button class="fall-btn" onclick="makeFall('🧸')">Send Teddies</button>
+    <button class="reveal-btn" onclick="reveal(this)">Tap for a secret</button>
+    <div class="secret">You are my safe place.</div>
+  </div>
+</section>
+
+<section id="promise" class="day">
+  <div class="card">
+    <h2>Promise Day 🤝</h2>
+    <p class="message">I may not be perfect, but my intentions with you always will be.</p>
+    <button class="fall-btn" onclick="makeFall('🤝')">Seal Promise</button>
+    <button class="reveal-btn" onclick="reveal(this)">Tap for a secret</button>
+    <div class="secret">I promise to never stop choosing you.</div>
+  </div>
+</section>
+
+<section id="hug" class="day">
+  <div class="card">
+    <h2>Hug Day 🤗</h2>
+    <p class="message">If I could, I’d hug you so tight that all your worries would disappear.</p>
+    <button class="fall-btn" onclick="makeFall('🤗')">Virtual Hug</button>
+    <button class="reveal-btn" onclick="reveal(this)">Tap for a secret</button>
+    <div class="secret">You feel like home to me.</div>
+  </div>
+</section>
+
+<section id="kiss" class="day">
+  <div class="card">
+    <h2>Kiss Day 💋</h2>
+    <p class="message">Every kiss with you feels like my heart smiling.</p>
+    <button class="fall-btn" onclick="makeFall('💋')">Blow Kisses</button>
+    <button class="reveal-btn" onclick="reveal(this)">Tap for a secret</button>
+    <div class="secret">One kiss from you fixes everything.</div>
+  </div>
+</section>
+
+<section id="valentine" class="day">
+  <div class="card">
+    <h2>Valentine’s Day ❤️</h2>
+    <p class="message">
+      This isn’t just Valentine’s Day. It’s a reminder that choosing you was the easiest and best decision of my life.
+      Thank you for being my smile, my calm, and my favorite person.
+    </p>
+    <button class="fall-btn" onclick="makeFall('❤️')">Shower Love</button>
+    <button class="reveal-btn" onclick="showReason()">Why I Love You</button>
+    <div class="secret" id="reasonBox"></div>
+  </div>
+</section>
+
+<!-- =====================
+     JAVASCRIPT LOGIC
+     ===================== -->
+<script>
+  // Ask for her name once and personalize the header
+  const name = prompt('Enter her name ❤️');
+  if (name) {
+    document.getElementById('herName').innerText = name;
+  }
+
+  // List of random reasons used on Valentine’s Day
+  const reasons = [
+    'You make ordinary moments feel special.',
+    'Your smile is my favorite view.',
+    'You understand me without words.',
+    'You make me want to be better.',
+    'You feel like home.',
+    'Life feels lighter with you.',
+    'You love with your whole heart.'
+  ];
+
+  // Shows a random reason from the array
+  function showReason() {
+    const box = document.getElementById('reasonBox');
+    const randomIndex = Math.floor(Math.random() * reasons.length);
+    box.innerText = reasons[randomIndex];
+    box.style.display = 'block';
+  }
+
+  // Switches visible day section
+  function showDay(id) {
+    document.querySelectorAll('.day').forEach(section => {
+      section.classList.remove('active');
+    });
+    document.getElementById(id).classList.add('active');
+  }
+
+  // Creates multiple falling emoji elements
+  function makeFall(symbol) {
+    for (let i = 0; i < 24; i++) {
+      const item = document.createElement('div');
+      item.className = 'fall-item';
+      item.innerHTML = symbol;
+
+      // Random horizontal position
+      item.style.left = Math.random() * 100 + 'vw';
+
+      // Random animation duration for natural effect
+      item.style.animationDuration = 3 + Math.random() * 3 + 's';
+
+      document.body.appendChild(item);
+
+      // Remove element after animation ends
+      setTimeout(() => {
+        item.remove();
+      }, 6000);
+    }
+  }
+
+  // Reveals the hidden secret message for a day
+  function reveal(button) {
+    const secret = button.nextElementSibling;
+    secret.style.display = 'block';
+    button.style.display = 'none';
+  }
+
+  // Show the first day by default
+  showDay('rose');
+</script>
+
+</body>
+</html>
